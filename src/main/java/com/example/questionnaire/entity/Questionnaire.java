@@ -33,12 +33,33 @@ public class Questionnaire {
 	@Column(name = "end_date")
 	private LocalDate endDate;
 
+
+	public Questionnaire(int id, String title, boolean published) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.published = published;
+	}
+
+	
 	public Questionnaire() {
 		super();
 	}
 
 	public Questionnaire(String title, String description, boolean published, LocalDate startDate, LocalDate endDate) {
 		super();
+		this.title = title;
+		this.description = description;
+		this.published = published;
+		this.startDate = startDate;
+		this.endDate = endDate;
+	}
+
+
+	public Questionnaire(int id, String title, String description, boolean published, LocalDate startDate,
+			LocalDate endDate) {
+		super();
+		this.id = id;
 		this.title = title;
 		this.description = description;
 		this.published = published;

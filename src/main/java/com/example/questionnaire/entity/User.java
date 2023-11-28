@@ -1,7 +1,12 @@
 package com.example.questionnaire.entity;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -9,9 +14,10 @@ import javax.persistence.Table;
 @Table(name = "user")
 public class User {
 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
-	@Column(name = "name")
-	private String name;
+	@Column(name = "num")
+	private int num;
 	
 	@Column(name = "phone_number")
 	private String phoneNumber;
@@ -30,28 +36,34 @@ public class User {
 	
 	@Column(name = "ans")
 	private String ans;
+	
+	@Column(name = "date_time")
+	private LocalDateTime dateTime;
 
 	public User() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
-	public User(String name, String phoneNumber, String email, int age, int qnid, int qid, String ans) {
+	public User(int num, String phoneNumber, String email, int age, int qnid, int qid, String ans,
+			LocalDateTime dateTime) {
 		super();
-		this.name = name;
+		this.num = num;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.age = age;
 		this.qnid = qnid;
 		this.qid = qid;
 		this.ans = ans;
+		this.dateTime = dateTime;
 	}
 
-	public String getName() {
-		return name;
+	public int getNum() {
+		return num;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNum(int num) {
+		this.num = num;
 	}
 
 	public String getPhoneNumber() {
@@ -101,7 +113,16 @@ public class User {
 	public void setAns(String ans) {
 		this.ans = ans;
 	}
+
+	public LocalDateTime getDateTime() {
+		return dateTime;
+	}
+
+	public void setDateTime(LocalDateTime dateTime) {
+		this.dateTime = dateTime;
+	}
 	
+
 	
 	
 }

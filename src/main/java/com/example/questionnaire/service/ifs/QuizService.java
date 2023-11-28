@@ -23,9 +23,13 @@ public interface QuizService {
 	//搜尋裡面帶三個參數
 	public QuizRes search(String title, LocalDate startDate, LocalDate endDate);
 	
-	//
+	//SQL 語法search
+	public QuizRes searchFuzzy(String title, LocalDate startDate, LocalDate endDate);
+
+	//搜尋問卷列表
 	public QuestionnaireRes searchQuestionnaireList(String title, LocalDate startDate, LocalDate endDate,boolean isPublished);
 	
+	//搜尋問題列表
 	public QuestionRes searchQuestionList(int qnId); //撈問卷的所有問題qnId
 	
 }

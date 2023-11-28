@@ -11,22 +11,28 @@ public class QuizRes { //Res指Respones回應
 	
 	private RtnCode rtncode;
 		
+	private List<QnQuVo> qnquVoList;
+
 	public QuizRes() {
 		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public QuizRes(List<QuizVo> quizVoList, RtnCode rtncode, List<QnQuVo> qnquVoList) {
+		super();
+		this.quizVoList = quizVoList;
+		this.rtncode = rtncode;
+		this.qnquVoList = qnquVoList;
 	}
 	
+	
+
 	public QuizRes(RtnCode rtncode) {
 		super();
 		this.rtncode = rtncode;
 	}
-
-	public RtnCode getRtncode() {
-		return rtncode;
-	}
-
-	public void setRtncode(RtnCode rtncode) {
-		this.rtncode = rtncode;
-	}
+	
+	
 
 	public QuizRes(List<QuizVo> quizVoList, RtnCode rtncode) {
 		super();
@@ -41,6 +47,22 @@ public class QuizRes { //Res指Respones回應
 	public void setQuizVoList(List<QuizVo> quizVoList) {
 		this.quizVoList = quizVoList;
 	}
-	
+
+	public RtnCode getRtncode() {
+		return rtncode;
+	}
+
+	public void setRtncode(RtnCode rtncode) {
+		this.rtncode = rtncode;
+	}
+
+	public List<QnQuVo> getQnquVoList() {
+		return qnquVoList;
+	}
+
+	public void setQnquVoList(List<QnQuVo> qnquVoList) {
+		this.qnquVoList = qnquVoList;
+	}
+
 
 }

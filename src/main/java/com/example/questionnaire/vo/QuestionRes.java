@@ -8,6 +8,7 @@ import com.example.questionnaire.entity.Question;
 public class QuestionRes {
 
 	private List<Question> questionList;
+	
 
 	private RtnCode rtnCode;
 
