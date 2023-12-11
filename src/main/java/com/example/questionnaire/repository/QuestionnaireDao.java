@@ -22,8 +22,39 @@ public interface QuestionnaireDao extends JpaRepository<Questionnaire, Integer>{
 	//In
 	public List<Questionnaire> findByIdIn(List<Integer> idList);
 
+	/**
+	 *	搜尋only標題 
+	 **/
+	public List<Questionnaire> findByTitleContaining(String title);
+	
+	/**
+	 *	搜尋only開始日期
+	 **/
+	public List<Questionnaire> findByStartDateGreaterThanEqual(LocalDate startDate);
+	
+	/**
+	 *	搜尋only結束日期
+	 **/
+	public List<Questionnaire> findByEndDateLessThanEqual(LocalDate endDate);
+	
+	/**
+	 *	搜尋only標題跟開始日期
+	 **/
+	public List<Questionnaire> findByTitleAndEndDateGreaterThanEqual(String title,LocalDate startDate);
+	
+	/**
+	 *	搜尋only標題跟結束日期
+	 **/
+	public List<Questionnaire> findByTitleAndStartDateLessThanEqual(String title,LocalDate endDate);
+	
+	/**
+	 *	搜尋標題
+	 **/
+	public List<Questionnaire> findByTitle(String title);
+	
 	//Containing模糊搜尋
 	public List<Questionnaire> findByTitleContainingAndStartDateGreaterThanEqualAndEndDateLessThanEqual(String title,LocalDate startDate,LocalDate endDate);
+	
 	
 	public List<Questionnaire> findByTitleContainingAndStartDateGreaterThanEqualAndEndDateLessThanEqualAndPublishedTrue(String title,LocalDate startDate,LocalDate endDate);
 
@@ -77,6 +108,13 @@ public interface QuestionnaireDao extends JpaRepository<Questionnaire, Integer>{
 			@Param("title")String title, //
 			@Param("desp")String description, 
 			@Param("startDate")LocalDate startDate); 
+	
+	
+//	@Modifying(clearAutomatically = true) //(clearAutomatically = true)清除暫存資料
+//	@Transactional    
+//	@Query(value = "update Questionnaire set published = true where startDate :today" )
+//	public int updateQnStatus(LocalDate today);
+	
 		
 //==================================select=================================//	
 	

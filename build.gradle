@@ -17,6 +17,7 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
+	
 	//要用Controller要加web 加上web表示為一個伺服器,可以常態啟用
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	
@@ -32,6 +33,8 @@ dependencies {
 	//Caffeine Cache
 	implementation 'com.github.ben-manes.caffeine:caffeine'
 	
+	//Hot Deployment 在build.gradle加這一行 更新程式碼就不用一直重新run server了
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	
 	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

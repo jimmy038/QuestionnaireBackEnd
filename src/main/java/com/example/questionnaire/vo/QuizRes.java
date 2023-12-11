@@ -5,7 +5,7 @@ import java.util.List;
 import com.example.questionnaire.constants.RtnCode;
 
 
-public class QuizRes { //Res指Respones回應
+public class QuizRes { //Res指Response回應
 	
 	private List<QuizVo> quizVoList; //QuizVo代表一張問卷
 	
