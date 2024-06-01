@@ -1,35 +1,22 @@
 package com.example.questionnaire.vo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.example.questionnaire.entity.Question;
 import com.example.questionnaire.entity.Questionnaire;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class QuizVo { //QuizVo¸Ì­±©ñ¤@­Ó°Ý¨÷¸ò¦Û¤vªºÃD¥Ø,¤@­ÓVo¥Nªí¤@­Ó°Ý¨÷¸ò°Ý¨÷¤ºªºÃD¥Ø
-
-	private Questionnaire questionnaire = new Questionnaire(); //¤@±i°Ý¨÷
+public class QuizVo {
 	
-	@JsonProperty("questionList")
-	private List<Question> questionList = new ArrayList<>(); //°Ý¨÷©³¤U¦h­ÓÃD¥Ø
+	private Questionnaire questionnaire;
+	
+	private List<Question> questionList;
 
-	public QuizVo() {
-		super();
-	}
-
-	public QuizVo(Questionnaire questionnaire, List<Question> questionList) {
-		super();
-		this.questionnaire = questionnaire;
-		this.questionList = questionList;
-	}
-
-	public Questionnaire getQuestionnaire() {
+	public Questionnaire getQuestionnaireList() {
 		return questionnaire;
 	}
 
-	public void setQuestionnaire(Questionnaire questionnaire) {
-		this.questionnaire = questionnaire;
+	public void setQuestionnaireList(Questionnaire questionnaireList) {
+		this.questionnaire = questionnaireList;
 	}
 
 	public List<Question> getQuestionList() {
@@ -39,6 +26,18 @@ public class QuizVo { //QuizVo¸Ì­±©ñ¤@­Ó°Ý¨÷¸ò¦Û¤vªºÃD¥Ø,¤@­ÓVo¥Nªí¤@­Ó°Ý¨÷¸ò°Ý¨
 	public void setQuestionList(List<Question> questionList) {
 		this.questionList = questionList;
 	}
+
+	public QuizVo(Questionnaire questionnaireList, List<Question> questionList) {
+		super();
+		this.questionnaire = questionnaireList;
+		this.questionList = questionList;
+	}
+
+	public QuizVo() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 	
+
 }

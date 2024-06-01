@@ -1,29 +1,27 @@
-package com.example.questionnaire.constants; //constants常數常量的意思
+package com.example.questionnaire.constants; //constants嚙窯嚙複常嚙緬嚙踝蕭嚙瞇嚙踝蕭
 
-//enum格式本身為列舉所以都先需寫SUCCESSFUL(200,"OK!")成功或是錯誤的訊息出來
-//錯誤訊息都會寫在這邊	RtnCode為returnCode的意思
-public enum RtnCode { //先建立package再建立enum(列舉),取名RtnCode,這邊放錯誤訊息,將錯誤訊息條件式列出
+public enum RtnCode { 
 	
-//	SUCCESSFUL為成功,()內的查HTTP狀態碼,主要用200,400,401,403,404, 200為成功,固定的,權限有相關的401&403,404固定就為找不到,剩下歸類到400
-	SUCCESSFUL(200,"SUCCESSFUL!!"),//  			在逗號後面加上註解符號有斷行的用意
-	QUESTION_PARAM_ERROR(400,"Question_Param_error!!"),//  Param_error參數錯誤的意思 通常字串內容為前面訊息的小寫
-	QUESTIONNAIRE_PARAM_ERROR(400,"Questionnaire_Param_error!!"),//
-	QUESTIONNAIRE_ID_PARAM_ERROR(400,"Questionnaire_id_Param_error!!"),//
-	QUESTIONNAIRE_ID_NOT_FOUND(404,"Questionnaire_id_Not_Found!!"),
-	UPDATE_ERROR(400,"Upadate_Error"),//
-	SAVE_ERROR(400,"Save_Error!!"),//
+//	SUCCESSFUL嚙踝蕭嚙踝蕭嚙穀,()嚙踝蕭嚙踝蕭嚙範HTTP嚙踝蕭嚙璀嚙碼,嚙瘩嚙緯嚙踝蕭200,400,401,403,404, 200嚙踝蕭嚙踝蕭嚙穀,嚙確嚙緩嚙踝蕭,嚙緞嚙踝蕭嚙踝蕭嚙踝蕭嚙踝蕭嚙踝蕭401&403,404嚙確嚙緩嚙瞇嚙踝蕭嚙賭不嚙踝蕭,嚙諸下嚙糊嚙踝蕭嚙踝蕭400
+	SUCCESSFUL(200,"SUCCESSFUL!!"),//  		
+	PARAM_ERROR(400,"PARAM ERROR!!"),//  
+	QUESTIONNAIRE_PARAM_ERROR(400,"QUESTIONNAIRE PARAM ERROR!!"),//
+	QUESTION_PARAM_ERROR(400,"QUESTION PARAM ERROR!!"),//
+	ID_NOT_FOUND(404,"ID NOT FOUND!!"),//
+	ID_PARAM_ERROR(400,"ID PARAM ERROR!!"),//
+	UPDATE_ERROR(400,"UPDATE ERROR!!"),//
 	;
 	
-	private int code; //這邊的code指的是代碼,回傳一個代碼
+	private int code; //嚙緻嚙賭的code嚙踝蕭嚙踝蕭嚙瞌嚙瞇嚙碼,嚙稷嚙褒一嚙諉代嚙碼
 	
 	private String message;
 
-	private RtnCode(int code, String message) { //產生帶有參數的建構方法
+	private RtnCode(int code, String message) { //嚙踝蕭嚙談帶嚙踝蕭嚙諸數迎蕭嚙諍構嚙踝蕭k
 		this.code = code;
 		this.message = message;
 	}
 
-	public int getCode() {	//這邊只會用到get因此只需要產生Get
+	public int getCode() {	//嚙緻嚙踝蕭u嚙罵嚙諄剁蕭get嚙稽嚙踝蕭嚙線嚙豎要嚙踝蕭嚙踝蕭Get
 		return code;
 	}
 
