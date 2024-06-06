@@ -20,6 +20,8 @@ public interface QuestionDao extends JpaRepository<Question, Integer>{
 
 	public List<Question> findAllByQnIdIn(List<Integer> qnIdList);
 	
+	public List<Question> findAllByQnId(int qnid);
+	
 //	SQL»yªk½m²ß	
 	@Query(value = "insert into question(id, qn_id, q_title, option_type, is_necessary, q_option)"
 			+ " values(?1, ?2, ?3, ?4, ?5, ?6)", nativeQuery = true)

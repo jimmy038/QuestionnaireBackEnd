@@ -1,0 +1,4 @@
+09:52:06.729 WARN  [HikariPool-43 housekeeper][HikariPool.run(HikariPool.java:788)] HikariPool-43 - Thread starvation or clock leap detected (housekeeper delta=5h39m17s790ms371µs).
+10:21:19.135 INFO  [http-nio-8080-exec-1][[/].log(DirectJDKLog.java:173)] Initializing Spring DispatcherServlet 'dispatcherServlet'
+10:21:19.136 INFO  [http-nio-8080-exec-1][DispatcherServlet.initServletBean(FrameworkServlet.java:525)] Initializing Servlet 'dispatcherServlet'
+10:21:19.137 INFO  [http-nio-8080-exec-1][DispatcherServlet.initServletBean(FrameworkServlet.java:547)] Completed initialization in 1 ms

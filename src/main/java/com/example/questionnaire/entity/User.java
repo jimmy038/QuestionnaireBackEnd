@@ -13,12 +13,15 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "user")
 public class User {
-
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Id
-	@Column(name = "num")
-	private int num;
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ans_id")
+	private int ansId;
+	
+	@Column(name = "name")
+	private String name;
+
 	@Column(name = "phone_number")
 	private String phoneNumber;
 	
@@ -28,42 +31,43 @@ public class User {
 	@Column(name = "age")
 	private int age;
 	
-	@Column(name = "qn_id")
-	private int qnid;
-	
-	@Column(name = "q_id")
-	private int qid;
-	
 	@Column(name = "ans")
 	private String ans;
 	
-	@Column(name = "date_time")
-	private LocalDateTime dateTime;
+	@Column(name = "qn_id")
+	private int qnId;
 
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public User(int num, String phoneNumber, String email, int age, int qnid, int qid, String ans,
-			LocalDateTime dateTime) {
+	public User(int ansId, String name, String phoneNumber, String email, int age, String ans, int qnId,
+			int questionId) {
 		super();
-		this.num = num;
+		this.ansId = ansId;
+		this.name = name;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.age = age;
-		this.qnid = qnid;
-		this.qid = qid;
 		this.ans = ans;
-		this.dateTime = dateTime;
+		this.qnId = qnId;
+	}
+	
+	public int getAnsId() {
+		return ansId;
 	}
 
-	public int getNum() {
-		return num;
+	public void setAnsId(int ansId) {
+		this.ansId = ansId;
 	}
 
-	public void setNum(int num) {
-		this.num = num;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getPhoneNumber() {
@@ -90,22 +94,6 @@ public class User {
 		this.age = age;
 	}
 
-	public int getQnid() {
-		return qnid;
-	}
-
-	public void setQnid(int qnid) {
-		this.qnid = qnid;
-	}
-
-	public int getQid() {
-		return qid;
-	}
-
-	public void setQid(int qid) {
-		this.qid = qid;
-	}
-
 	public String getAns() {
 		return ans;
 	}
@@ -114,15 +102,13 @@ public class User {
 		this.ans = ans;
 	}
 
-	public LocalDateTime getDateTime() {
-		return dateTime;
+	public int getQnId() {
+		return qnId;
 	}
 
-	public void setDateTime(LocalDateTime dateTime) {
-		this.dateTime = dateTime;
+	public void setQnId(int qnId) {
+		this.qnId = qnId;
 	}
-	
 
-	
-	
+
 }

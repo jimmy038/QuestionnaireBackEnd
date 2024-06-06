@@ -15,19 +15,18 @@ public class UserRes { //Res  Response回應
 		// TODO Auto-generated constructor stub
 	}
 
+	
+	public UserRes(RtnCode rtncode) {
+		super();
+		this.rtncode = rtncode;
+	}
+	
 	public UserRes(User user, RtnCode rtncode) {
 		super();
 		this.user = user;
 		this.rtncode = rtncode;
 	}
 	
-	
-
-	public UserRes(RtnCode rtncode) {
-		super();
-		this.rtncode = rtncode;
-	}
-
 	public User getUser() {
 		return user;
 	}
@@ -43,11 +42,6 @@ public class UserRes { //Res  Response回應
 	public void setRtncode(RtnCode rtncode) {
 		this.rtncode = rtncode;
 	}
-	
-
-	
-	
-
 
 	
 }

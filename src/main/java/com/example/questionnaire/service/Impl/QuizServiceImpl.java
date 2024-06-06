@@ -1,16 +1,13 @@
 package com.example.questionnaire.service.Impl;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -64,23 +61,21 @@ public class QuizServiceImpl implements QuizService {
 		System.out.println("SUCCESSFUL: " + quList);
 		return new QuizRes(RtnCode.SUCCESSFUL);
 		// 若為null就是通過下面checkParam方法的兩個的檢查
-
 	}
 
 	// ↓這部分實作從QuizRes來的參數檢查,檢查4個參數,參數從QuizRes來的,參數不能為空,檢查這4個標題.輸入.開始及結束日期
 	private QuizRes checkParam(QuizReq req) { // 這個方法主要檢查參數作用,這個方法回傳RES或是null
-//		Questionnaire qn = req.getQuestionnaire();
-////		確保問卷標題(Title)和描述(Description)非空。確保問卷的開始日期(StartDate)和結束日期(EndDate)不為空且合理，並且開始日期不晚於結束日期。		
-//		if(!StringUtils.hasText(qn.getTitle()) || !StringUtils.hasText(qn.getDescription())
-//				|| qn.getStartDate() == null || qn.getEndDate() == null
-//				|| qn.getStartDate().isAfter(qn.getEndDate())) {  //A是否在B之後(開始時間在結束時間之後 為false)
-//			return new QuizRes(RtnCode.QUESTIONNAIRE_PARAM_ERROR);//如果QUESTIONNAIRE這張表錯就不會檢查到第二張
-//		}
-////		對於每個問題，確保問題的ID(QuId)大於0。確保問題的標題(Title)、選項類型(OptionType)和選項內容(Option)非空。		
+		Questionnaire qn = req.getQuestionnaire();
+//		確保問卷標題(Title)和描述(Description)非空。確保問卷的開始日期(StartDate)和結束日期(EndDate)不為空且合理，並且開始日期不晚於結束日期。		
+		if (!StringUtils.hasText(qn.getTitle()) || !StringUtils.hasText(qn.getDescription())
+				|| qn.getStartDate() == null || qn.getEndDate() == null || qn.getStartDate().isAfter(qn.getEndDate())) { // A是否在B之後(開始時間在結束時間之後
+																															// 為false)
+			return new QuizRes(RtnCode.QUESTIONNAIRE_PARAM_ERROR);// 如果QUESTIONNAIRE這張表錯就不會檢查到第二張
+		}
+//		對於每個問題，確保問題的ID(QuId)大於0。確保問題的標題(Title)、選項內容(Option)非空。		
 //		List<Question> quList = req.getQuestionList();
-//		for(Question qu : quList) { 
-//			if(qu.getQuId() <=0 || !StringUtils.hasText(qu.getTitle()) 
-//					|| !StringUtils.hasText(qu.getOptionType())|| !StringUtils.hasText(qu.getOption())) { //這邊if判斷question的
+//		for (Question qu : quList) {
+//			if (qu.getQuId() <= 0 || !StringUtils.hasText(qu.getTitle()) || !StringUtils.hasText(qu.getOption())) { // 這邊防問題的
 //				return new QuizRes(RtnCode.QUESTION_PARAM_ERROR);
 //			}
 //		}
@@ -93,15 +88,15 @@ public class QuizServiceImpl implements QuizService {
 				// 方法，用於更新現有的問卷資料。
 	public QuizRes update(QuizReq req) {
 //	參數檢查,checkParam(req): 呼叫一個方法，檢查傳入的 QuizReq 對象是否符合某些參數的要求。checkQuestionnaireId(req): 另一個方法，用於確認傳入的問卷 ID 是否有效。		
-//		QuizRes checkResult = checkParam(req); // 把上面create檢查參數抽方法的checkResult的方法拉下來用
-//		if (checkResult != null) { //
-//			return checkResult;
-//		}
+		QuizRes checkResult = checkParam(req);
+		if (checkResult != null) {
+			return checkResult;
+		}
 //		// 抽出檢查ID的方法
-//		checkResult = checkQuestionnaireId(req);
-//		if (checkResult != null) {
-//			return checkResult;
-//		}
+		checkResult = checkQuestionnaireId(req);
+		if (checkResult != null) {
+			return checkResult;
+		}
 //		檢查問卷是否存在,用qnDao.findById(req.getQuestionnaire().getId())查找要更新的問卷。如果該問卷ID不存在，將返回QUESTIONNAIRE_ID_NOT_FOUND的QuizRes物件。
 		Optional<Questionnaire> qnOp = qnDao.findById(req.getQuestionnaire().getId());
 		if (qnOp.isEmpty()) { // 檢查ID存不存在,如果不存在拋錯誤訊息出去
@@ -132,7 +127,6 @@ public class QuizServiceImpl implements QuizService {
 		}
 		return new QuizRes(RtnCode.UPDATE_ERROR);
 	}
-	
 
 //	抽方法,檢查問卷的ID是否符合特定的條件。這包括檢查要新增的問題是否與問卷相關、要刪除的問題是否屬於這張問卷等。如果檢查失敗，將返回對應的錯誤碼的 QuizRes 物件。
 	private QuizRes checkQuestionnaireId(QuizReq req) {
@@ -160,15 +154,12 @@ public class QuizServiceImpl implements QuizService {
 				}
 			}
 		}
-//		如果所有檢查都通過，方法將返回 null，表示問卷ID符合所有條件。但如果任何一個檢查失敗，則會返回對應的錯誤碼的QuizRes 物件，指示發生了什麼問題。
 		return null;
 	}
 
-	@CacheEvict(value = "search")
+//	@CacheEvict(value = "search")
 	@Override // 刪除問卷題目及問題的方法
-//	這段程式碼描述了一個用於刪除問卷題目及問題的方法。用於刪除問卷題目及問題。這個方法接受一個List<Integer>qnIdList參數代表多筆，其中包含要刪除的問卷ID列表。	
 	public QuizRes deleteQuestionnaire(List<Integer> qnIdList) {
-//	qnDao.findByIdIn(qnIdList) 被用來根據提供的問卷ID列表從資料庫中查詢問卷		
 		List<Questionnaire> qnList = qnDao.findByIdIn(qnIdList);
 		List<Integer> idList = new ArrayList<>();
 //	會遍歷qnList中的每個問卷，檢查是否滿足以下條件：問卷尚未發布或者已經發布但是當前日期小於開始日期。如果滿足條件，該問卷的ID會被加入到idList 中。				
@@ -304,7 +295,7 @@ public class QuizServiceImpl implements QuizService {
 		return new QuizRes(null, RtnCode.SUCCESSFUL, res);
 	}
 
-	@Override
+	@Override // 搜尋問卷列表模糊搜尋
 	public QuestionnaireRes searchQuizs(String title, LocalDate startDate, LocalDate endDate) {
 		List<Questionnaire> qnList = new ArrayList<>();
 
@@ -314,18 +305,18 @@ public class QuizServiceImpl implements QuizService {
 			return new QuestionnaireRes(tempQuestionnaire, RtnCode.SUCCESSFUL);
 		}
 
-		//判斷只有開始日期
-		if(title == null && endDate == null) {
-			qnList =qnDao.findByStartDateGreaterThanEqual(startDate);
-			return new QuestionnaireRes(qnList, RtnCode.SUCCESSFUL); 
+		// 判斷只有開始日期
+		if (title == null && endDate == null) {
+			qnList = qnDao.findByStartDateGreaterThanEqual(startDate);
+			return new QuestionnaireRes(qnList, RtnCode.SUCCESSFUL);
 		}
 
-		//判斷只有結束日期
-		if(title == null && startDate == null) {
-			qnList =qnDao.findByEndDateLessThanEqual(endDate);
-			return new QuestionnaireRes(qnList, RtnCode.SUCCESSFUL); 
+		// 判斷只有結束日期
+		if (title == null && startDate == null) {
+			qnList = qnDao.findByEndDateLessThanEqual(endDate);
+			return new QuestionnaireRes(qnList, RtnCode.SUCCESSFUL);
 		}
-	
+
 		// 標題 開始 結束日期
 		if (title == null && startDate == null && endDate == null) {
 			qnList = qnDao.findAll();
@@ -336,15 +327,29 @@ public class QuizServiceImpl implements QuizService {
 				endDate);
 		return new QuestionnaireRes(qnList, RtnCode.SUCCESSFUL);
 	}
-	
-//===================================================================================================================================//	
-	/*排程cron           秒    分  時  日  月  周  */  
-	@Scheduled (cron = "0/5   *  14  *  *  *")     
-	public void schedule() {
-		System.out.println(LocalDateTime.now());
+
+	@Override // 找問卷ID及找問卷內底下對應問題
+	public QuizRes getQuizInfo(int id) {
+		//如果id問卷不存在 回傳錯誤
+		if (!qnDao.existsById(id)) {
+			return new QuizRes(RtnCode.QUESTIONNAIRE_ID_NOT_FOUND);
+		}
+		//撈出問卷id接回來
+		Optional<Questionnaire> quiz = qnDao.findById(id);
+		//撈出問題id接回來
+		List<Question> questions = quDao.findAllByQnId(id);
+		List<QuizVo> quizVo = new ArrayList<>();
+		quizVo.add(new QuizVo(quiz.get(), questions));
+		return new QuizRes(RtnCode.SUCCESSFUL, quizVo);
 	}
-	
-	
+
+//===================================================================================================================================//	
+	/* 排程cron 秒 分 時 日 月 周 */
+//	@Scheduled (cron = "0/5   *  14  *  *  *")     
+//	public void schedule() {
+//		System.out.println(LocalDateTime.now());
+//	}
+
 //	/*排程cron           秒  分  時  日  月  周  ，每天更改狀態*/  
 //	@Scheduled (cron = "0   *  15  *  *  *")     
 //	public void updateQnStatue() {
@@ -354,6 +359,5 @@ public class QuizServiceImpl implements QuizService {
 //		System.out.println(res);
 //
 //	}
-
 
 }

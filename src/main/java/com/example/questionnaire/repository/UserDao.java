@@ -6,5 +6,6 @@ import com.example.questionnaire.entity.User;
 
 public interface UserDao extends JpaRepository<User, Integer>{
 
+
 		
 }

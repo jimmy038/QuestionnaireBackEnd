@@ -101,8 +101,26 @@ public class QuizConetroller {
 	}
 	
 	@PostMapping(value = "api/quiz/saveUser") // ←一個api的完整格式為一個url,給外面的使用,post指的是提供HTTP的請求方法
-	public UserRes saveUser(@RequestBody UserReq req) {
-		return userService.saveUser(req);
+	public UserRes saveUser(@RequestBody User user) {
+		return userService.saveUser(user);
 	}
-
+	
+	//找問卷ID及找問卷內底下對應問題
+	@GetMapping(value = "api/quiz/getQuizInfo") 
+	public QuizRes getQuizInfo(@RequestParam(value = "id") int id) {
+		return service.getQuizInfo(id);
+	}
+	
+	//找使用者回答所有資訊的ID
+	@GetMapping(value = "api/quiz/getAnsId") 
+	public UserRes getAnsId(@RequestParam(value = "id") int ansId) {
+		return userService.getAnsId(ansId);
+	}
+	
+	//抓所有資料 問卷 問題 user api
+	@GetMapping(value = "api/quiz/getgetCombinedData") 
+	public QuizRes getCombinedData(@RequestParam(value = "id")int id,
+			@RequestParam(value = "ansId")int ansId) {
+		return userService.getCombinedData(id,ansId);
+	}
 }

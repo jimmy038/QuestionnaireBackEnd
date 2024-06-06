@@ -12,6 +12,9 @@ public enum RtnCode { //先建立package再建立enum(列舉),取名RtnCode,這邊放錯誤訊息
 	QUESTIONNAIRE_ID_NOT_FOUND(404,"Questionnaire_id_Not_Found!!"),
 	UPDATE_ERROR(400,"Upadate_Error"),//
 	SAVE_ERROR(400,"Save_Error!!"),//
+	ID_NOT_FOUND(400,"ID_NOT_FOUND!!"),  //
+	PARAM_ERROR(400,"PARAM_ERROR"), //
+	DATABASE_ERROR(400,"DATABASE_ERROR"),//
 	;
 	
 	private int code; //這邊的code指的是代碼,回傳一個代碼

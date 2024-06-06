@@ -102,14 +102,4 @@ public class Question {
 		this.option = option;
 	}
 
-	@Override
-	public String toString() {
-		return "Question [quId=" + quId + ", qnId=" + qnId + ", title=" + title + ", optionType=" + optionType
-				+ ", necessary=" + necessary + ", option=" + option + "]";
-	}
-	
-	
-
-	
-
 }
