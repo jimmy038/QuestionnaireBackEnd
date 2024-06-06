@@ -3,32 +3,24 @@ package com.example.questionnaire.vo;
 import java.util.List;
 
 import com.example.questionnaire.constants.RtnCode;
-<<<<<<< HEAD
 import com.example.questionnaire.entity.User;
-=======
-import com.example.questionnaire.entity.Question;
-import com.example.questionnaire.entity.Questionnaire;
->>>>>>> 3574534accc9673b71bf9cd8bd9e82d904ab7dc0
 
-public class QuizRes {
 
-	private  List<QuizVo> quizVoList;
+public class QuizRes { //Res指Response回應
+	
+	private List<QuizVo> quizVoList; //QuizVo代表一張問卷
 	
 	private RtnCode rtncode;
-<<<<<<< HEAD
 		
 	private List<QnQuVo> qnquVoList;
 	
 	private User user; //放入使用者資料表
-=======
->>>>>>> 3574534accc9673b71bf9cd8bd9e82d904ab7dc0
 
 	public QuizRes() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-<<<<<<< HEAD
 	public QuizRes(List<QuizVo> quizVoList, RtnCode rtncode, List<QnQuVo> qnquVoList) {
 		super();
 		this.quizVoList = quizVoList;
@@ -62,8 +54,6 @@ public class QuizRes {
 		this.rtncode = rtncode;
 	}
 	
-=======
->>>>>>> 3574534accc9673b71bf9cd8bd9e82d904ab7dc0
 	public QuizRes(List<QuizVo> quizVoList, RtnCode rtncode) {
 		super();
 		this.quizVoList = quizVoList;
@@ -92,7 +82,6 @@ public class QuizRes {
 		this.rtncode = rtncode;
 	}
 
-<<<<<<< HEAD
 	public List<QnQuVo> getQnquVoList() {
 		return qnquVoList;
 	}
@@ -116,7 +105,5 @@ public class QuizRes {
 	public void setUser(User user) {
 		this.user = user;
 	}
-=======
->>>>>>> 3574534accc9673b71bf9cd8bd9e82d904ab7dc0
 
 }

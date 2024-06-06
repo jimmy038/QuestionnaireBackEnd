@@ -1,21 +1,18 @@
 package com.example.questionnaire.entity;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "user")
 public class User {
-<<<<<<< HEAD
-=======
-
-	@Column(name = "user_id")
-	private int userId;
-	
-	@Column(name = "name")
-	private String name;
->>>>>>> 3574534accc9673b71bf9cd8bd9e82d904ab7dc0
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +31,6 @@ public class User {
 	@Column(name = "age")
 	private int age;
 	
-<<<<<<< HEAD
 	@Column(name = "ans")
 	private String ans;
 	
@@ -115,16 +111,4 @@ public class User {
 	}
 
 
-=======
-	@Column(name = "qn_id")
-	private int qnId;
-
-	@Column(name = "question_id")
-	private int questionId;
-	
-	@Column(name = "answer")
-	private String answer;
-	
-	
->>>>>>> 3574534accc9673b71bf9cd8bd9e82d904ab7dc0
 }

@@ -1,20 +1,216 @@
 package com.example.questionnaire.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.questionnaire.entity.Questionnaire;
-
-
+import com.example.questionnaire.vo.QnQuVo;
 
 @Repository
 public interface QuestionnaireDao extends JpaRepository<Questionnaire, Integer>{
 
-	/** å–å¾—æœ€æ–°ä¸€ç­†è³‡æ–™:æ’ˆå‡ºè³‡æ–™å¾Œå€’æ•˜æ’åˆ—ï¼Œå€’æ•˜å¾Œä¾ç…§IDæ‰¾æœ€æ–°ä¸€ç­†DESCå€’æ•˜æ’åˆ— **/
-	public Questionnaire findTopByOrederByIdDesc();
+	/**¨úªº³Ì·s¤@µ§¸ê®Æ:¼´¨ú¥ş³¡¸ê®Æ«á­Ë±Ô,³Ì·sªº¨ºµ§¸ê®Æ·|ÅÜ¦¨²Ä¤@µ§¸ê®Æ**/  //¨Ï¥Î±×½u¬P¬P¥iÅı¸Óµ{¦¡½X²¾¦Ü¸Ó¦ì¤l®ÉÅã¥Ü¨äµù¸Ñ
+//	public Questionnaire findTopByOrderByIdDesc();
+	
+	//In
+	public List<Questionnaire> findByIdIn(List<Integer> idList);
+
+	/**
+	 *	·j´Monly¼ĞÃD 
+	 **/
+	public List<Questionnaire> findByTitleContaining(String title);
+	
+	/**
+	 *	·j´Monly¶}©l¤é´Á
+	 **/
+	public List<Questionnaire> findByStartDateGreaterThanEqual(LocalDate startDate);
+	
+	/**
+	 *	·j´Monlyµ²§ô¤é´Á
+	 **/
+	public List<Questionnaire> findByEndDateLessThanEqual(LocalDate endDate);
+	
+	/**
+	 *	·j´Monly¼ĞÃD¸ò¶}©l¤é´Á
+	 **/
+	public List<Questionnaire> findByTitleAndEndDateGreaterThanEqual(String title,LocalDate startDate);
+	
+	/**
+	 *	·j´Monly¼ĞÃD¸òµ²§ô¤é´Á
+	 **/
+	public List<Questionnaire> findByTitleAndStartDateLessThanEqual(String title,LocalDate endDate);
+	
+	/**
+	 *	·j´M¼ĞÃD
+	 **/
+	public List<Questionnaire> findByTitle(String title);
+	
+	//Containing¼Ò½k·j´M
+	public List<Questionnaire> findByTitleContainingAndStartDateGreaterThanEqualAndEndDateLessThanEqual(String title,LocalDate startDate,LocalDate endDate);
+	
+	
+	public List<Questionnaire> findByTitleContainingAndStartDateGreaterThanEqualAndEndDateLessThanEqualAndPublishedTrue(String title,LocalDate startDate,LocalDate endDate);
+
+//==========================================================================================================================================================================//	
+	//SQL»yªk½m²ß insert¸òupdate±j¨î­n¥[¤W@Modifying,@Transactional
+	@Modifying      //value«üªº¬OÄæ¦ì¹ïÀ³ªº­È
+	@Transactional  //insertªº­­¨î:nativeQuery = true,­n¥[¤WnativeQuery®É,­n¼gvalue =
+	@Query(value = "insert into questionnaire (title,description,is_published,start_date,end_date)"
+			+ "values(:title, :desp, :isPublished, :startDate, :endDate)", nativeQuery = true) //¥Î«_¸¹¹ïÀ³¨ì@Param¤ºªº­È
+	public int insert( // ±a¤J¸ê®Æªíªº°Ñ¼Æ¡õ
+			@Param("title") String title, //
+			@Param("desp")String description, // 
+			@Param("isPublished")boolean isPublished, //
+			@Param("startDate")LocalDate startDate, //
+			@Param("endDate")LocalDate endDate); //¥Îint¦]insert¦¨¥\¥¢±Ñ³£·|¦^int
+	
+	
+	//insertData
+	@Modifying 		//¥ÎnativeQuery questionnaire¹ïÀ³¸ê®Æ®wªíªº¦WºÙ,¨ä¾l¹ïÀ³¨ì¸êÄæ¦ì¦WºÙ
+	@Transactional  //insertªº­­¨î:nativeQuery = true,­n¥[¤WnativeQuery®É,­n¼gvalue =
+	@Query(value = "insert into questionnaire (title,description,is_published,start_date,end_date)"
+			+ " values (?1, ?2, ?3, ?4, ?5)", nativeQuery = true) //¥Î«_¸¹¹ïÀ³¨ì@Param¤ºªº­È
+	public int insertData( // ±a¤J¸ê®Æªíªº°Ñ¼Æ¡õ
+			String title, // ?1 ¥Î°İ¸¹?¥h¹ïÀ³¬Û¹ïÀ³¦ì¤l 
+			String description, // ?2
+			boolean isPublished, // ?3
+			LocalDate startDate, // ?4
+			LocalDate endDate); // ?5 ¥Îint¦]insert¦¨¥\¥¢±Ñ³£·|¦^int
+			
+//=========================================SQL»yªk========================================================//	
+//	update update»yªk¬°:update ¸ê®Æªí¦WºÙ, set ¸ê®ÆªíÄæ¦ì where
+	@Modifying
+	@Transactional
+	@Query(value = "update questionnaire set title = :title, description = :desp"
+			+ "where id = :id", nativeQuery = true) //where±ø¥ó¤@©w­n¥[¤£¥[¥ş§ï
+	public int update(
+			@Param("id")int id, //
+			@Param("title")String title, //
+			@Param("desp")String description); 
+	
+	/**
+	 *¤£¼g nativeQuery µ¥¦P©ó nativeQuery = false
+	 *»yªkÄÁ¿öªº¦WºÙ­nÅÜ¸Yentityªºclass¦WºÙ : Äæ¦ì¦WºÙ­nÅÜ¦¨Äİ©Ê¦WºÙ
+	 **/		
+	@Modifying(clearAutomatically = true) //(clearAutomatically = true)²M°£¼È¦s¸ê®Æ
+	@Transactional    
+	@Query(value = "update Questionnaire set title = :title, description = :desp, startDate = :startDate"  
+			+ " where id = :id") // ¤£¼g nativeQuery µ¥¦P©ó nativeQuery = false,where±ø¥ó¤@©w­n¥[,¤£¥[¥ş§ï,¥Î¨ìwhere­n¥[ªÅ¥ÕÁä
+	public int updateDate(
+			@Param("id")int id, //
+			@Param("title")String title, //
+			@Param("desp")String description, 
+			@Param("startDate")LocalDate startDate); 
+	
+	
+//	@Modifying(clearAutomatically = true) //(clearAutomatically = true)²M°£¼È¦s¸ê®Æ
+//	@Transactional    
+//	@Query(value = "update Questionnaire set published = true where startDate :today" )
+//	public int updateQnStatus(LocalDate today);
+	
 		
-	public Questionnaire findByIdIn(List<Integer> idList);
+//==================================select=================================//	
+	
+	@Query(value = "select * from  questionnaire " 
+			+ " where start_date > :startDate" , nativeQuery = true)
+	public List<Questionnaire> findByStartDate(@Param("startDate") LocalDate startDate);
+	
+//	
+	@Query(value = "select new  Questionnaire (id, title, description, published, startDate, endDate)"  
+			+ " from Questionnaire where startDate > :startDate")
+	public List<Questionnaire> findByStartDate1(@Param("startDate") LocalDate startDate);
+	
+//  nativeQuery = false, selectªºÄæ¦ì­n¨Ï¥Î«Øºc¤èªkªº¤è¦¡,¥B Entity ¤¤¤]­n¦³¹ïÀ³ªº«Øºc¤èªk
+	@Query(value = "select new  Questionnaire (id, title, published)"  
+			+ " from Questionnaire where start_date > :startDate")
+	public List<Questionnaire> findByStartDate2(@Param("startDate") LocalDate startDate);
+	
+//  ¨Ï¥Î§O¦W,»yªk as ¨ú§O¦W¥Î as ¦Û©w¸q ¦W(qu)	,¹ïentity°µ¾Ş§@,¹ïentity¨ú¤@­Ó§O¦W
+	@Query(value = "select qu from Questionnaire as qu"
+			+ " where startDate > :startDate or published = :isPublished ")
+	public List<Questionnaire> findByStartDate3(
+			@Param("startDate") LocalDate startDate, 
+			@Param("isPublished")boolean published);
+
+//  order by		
+	@Query(value = "select qu from Questionnaire as qu"
+			+ " where startDate > :startDate or published = :isPublished order by id desc",nativeQuery = true)
+	public List<Questionnaire> findByStartDate4(
+			@Param("startDate") LocalDate startDate, 
+			@Param("isPublished")boolean published);
+	
+//	order by + limit
+//	1. limit»yªk¥u¯à¨Ï¥Î¦b nativeQuery = true 
+//	2. limit­n©ñ¦b»yªk³Ì«á
+	@Query(value = "select * from questionnaire as qu"
+			+ " where start_date > :startDate or is_published = :isPublished order by id desc limit :num"
+			,nativeQuery = true)
+	public List<Questionnaire> findByStartDate5(
+			@Param("startDate") LocalDate startDate, 
+			@Param("isPublished")boolean published,
+			@Param("num")int limitnum);
+	
+//========================================================================================================//
+	@Query(value = "select * from questionnaire "
+			+ " limlt :startIndex, :limitNum", nativeQuery = true)
+	public List<Questionnaire> findWithLimitAndStartIndex(
+			@Param("startIndex")int startIndex,//
+			@Param("limitNum")int limitNum);//
+	
+	
+	//like
+	@Query(value = "select * from questionnaire " 
+			+ " where title like %:title%", nativeQuery = true)
+	public List<Questionnaire> searchTitleLike(@Param("title")String title);
+	
+	
+	//regexp 
+	@Query(value = "select * from questionnaire " 
+			+ " where title like :title", nativeQuery = true)
+	public List<Questionnaire> searchTitleLike2(@Param("title")String title);
+	
+	
+	//regexp or
+	@Query(value = "select * from questionnaire " 
+			+ " where description regexp :keyword1|:keyword2", nativeQuery = true)
+	public List<Questionnaire> searchDescriptionContaining(
+			@Param("keyword1")String keyword1,
+			@Param("keyword2")String keyword2);
+	
+	
+	//regexp or ,regexp¥u¯à¥Î¦bnativeQuery = trueªº®É­Ô
+	@Query(value = "select * from questionnaire " 
+			+ " where description regexp concat(:keyword1, '|', :keyword2)", nativeQuery = true)
+	public List<Questionnaire> searchDescriptionContaining2(
+			@Param("keyword1")String keyword1,
+			@Param("keyword2")String keyword2);
+	
+//=================================join==================================//	
+
+	@Query("select new com.example.questionnaire.vo.QnQuVo("
+			+ " qn.id, qn.title, qn.description, qn.published, qn.startDate, qn.endDate,"
+			+ " q.quId, q.title, q.optionType, q.necessary,q.option)"
+			+ " from Questionnaire as qn join Question as q on qn.id = q.qnId")
+	public List<QnQuVo> selectJoinQnQu();
+	
+	
+	@Query("select new com.example.questionnaire.vo.QnQuVo("
+			+ " qn.id, qn.title, qn.description, qn.published, qn.startDate, qn.endDate,"
+			+ " q.quId, q.title, q.optionType, q.necessary,q.option)"
+			+ " from Questionnaire as qn join Question as q on qn.id = q.qnId"
+			+ " where qn.title like %:title% and qn.startDate >= :startDate and qn.endDate <= :endDate")
+	public List<QnQuVo> selectFuzzy(		
+			@Param("title")String title,//
+			@Param("startDate")LocalDate startDate,
+			@Param("endDate")LocalDate endDate);
+
 	
 }
+

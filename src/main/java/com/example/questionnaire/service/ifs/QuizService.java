@@ -5,28 +5,27 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.questionnaire.vo.QuestionRes;
+import com.example.questionnaire.vo.QuestionnaireRes;
 import com.example.questionnaire.vo.QuizReq;
 import com.example.questionnaire.vo.QuizRes;
-import com.example.questionnaire.vo.UserReq;
-import com.example.questionnaire.vo.UserRes;
 
 @Service
 public interface QuizService {
 
-	public QuizRes create(QuizReq req);
+	public QuizRes create(QuizReq req); //創建表單
 	
-	public QuizRes update(QuizReq req);
+	public QuizRes update(QuizReq req); //更新(修改)
 	
-	public QuizRes deleteQuestionnaire(List<Integer> qnIdList);
+	public QuizRes deleteQuestionnaire(List<Integer> qnIdList); //刪除Id可刪除多筆
 	
-	public QuizRes deleteQuestion(int qnId,List<Integer> quIdList);
-	
-	public QuizRes search(String title, LocalDate startDate,LocalDate endDate);
+	//刪除同張問卷的題目
+	public QuizRes deleteQuestion(int qnId,List<Integer> quIdList); //刪除問題
 
-<<<<<<< HEAD
 	//搜尋裡面帶三個參數
 	public QuizRes search(String title, LocalDate startDate, LocalDate endDate);
 
+	//找問卷ID及找問卷內底下對應問題
 	public QuizRes getQuizInfo(int id);
 	
 	
@@ -44,7 +43,4 @@ public interface QuizService {
 	public QuestionRes searchQuestionList(int qnId); //撈問卷的所有問題qnId
 
 
-=======
-	
->>>>>>> 3574534accc9673b71bf9cd8bd9e82d904ab7dc0
 }

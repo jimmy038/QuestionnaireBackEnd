@@ -1,11 +1,14 @@
 package com.example.questionnaire.repository;
 
+import java.util.List;
+
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.example.questionnaire.entity.Question;
 
-<<<<<<< HEAD
 @Repository //Dao只是來繼承JPA語法
 public interface QuestionDao extends JpaRepository<Question, Integer>{
 
@@ -24,9 +27,5 @@ public interface QuestionDao extends JpaRepository<Question, Integer>{
 			+ " values(?1, ?2, ?3, ?4, ?5, ?6)", nativeQuery = true)
 	public void insert(int id, int qnid, String qtitle, String optionType, boolean isNecessary, String qoption);
 	
-=======
-@Repository
-public interface QuestionDao extends JpaRepository<Question,Integer>{
->>>>>>> 3574534accc9673b71bf9cd8bd9e82d904ab7dc0
 
 }

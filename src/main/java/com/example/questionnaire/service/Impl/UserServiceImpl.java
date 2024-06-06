@@ -16,7 +16,6 @@ import com.example.questionnaire.repository.QuestionDao;
 import com.example.questionnaire.repository.QuestionnaireDao;
 import com.example.questionnaire.repository.UserDao;
 import com.example.questionnaire.service.ifs.UserService;
-import com.example.questionnaire.vo.QuizReq;
 import com.example.questionnaire.vo.QuizRes;
 import com.example.questionnaire.vo.QuizVo;
 import com.example.questionnaire.vo.UserReq;
@@ -77,7 +76,6 @@ public class UserServiceImpl implements UserService{
 			return new UserRes(RtnCode.QUESTIONNAIRE_ID_NOT_FOUND);	
 		}
 		try {
-		
 			userDao.save(userReq.getUser());
 			return new UserRes(RtnCode.SUCCESSFUL);	
 		} catch (Exception e) {

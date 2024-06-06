@@ -5,10 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,7 +20,6 @@ import com.example.questionnaire.vo.QuestionnaireRes;
 import com.example.questionnaire.vo.QuizReq;
 import com.example.questionnaire.vo.QuizRes;
 import com.example.questionnaire.vo.QuizSearchReq;
-import com.example.questionnaire.vo.UserReq;
 import com.example.questionnaire.vo.UserRes;
 
 /*Controller命名方式都是跟著service*/
@@ -100,6 +97,7 @@ public class QuizConetroller {
 		return service.searchQuestionList(qnId);
 	}
 	
+	//存使用者資料
 	@PostMapping(value = "api/quiz/saveUser") // ←一個api的完整格式為一個url,給外面的使用,post指的是提供HTTP的請求方法
 	public UserRes saveUser(@RequestBody User user) {
 		return userService.saveUser(user);
