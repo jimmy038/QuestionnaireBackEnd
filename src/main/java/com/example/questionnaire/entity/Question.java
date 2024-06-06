@@ -5,61 +5,48 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "question")
 public class Question {
 
 	@Id
-	@Column(name = "id")
+	@Column(name = "question_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@JsonProperty("id")
-	private int quId;
+	private int id;
 	
 	@Column(name = "qn_id")
-	@JsonProperty("qn_id")
 	private int qnId;
 	
-	@Column(name = "q_title")
-	@JsonProperty("q_title")
-	private String title;
+	@Column(name = "question_title")
+	private String qTitle;
 	
 	@Column(name = "option_type")
-	@JsonProperty("option_type")
 	private String optionType;
 	
-	@Column(name = "is_necessary") 
-	@JsonProperty("is_necessary")
-	private boolean necessary;
+	@Column(name = "is_necessary")
+	private String necessary;
 	
 	@Column(name = "q_option")
-	@JsonProperty("q_option")
 	private String option;
 
-	public Question() {
+	public Question(int id, int qnId, String qTitle, String optionType, String necessary, String option) {
 		super();
-	}
-
-	public Question(int quId, int qnId, String title, String optionType, boolean necessary, String option) {
-		super();
-		this.quId = quId;
+		this.id = id;
 		this.qnId = qnId;
-		this.title = title;
+		this.qTitle = qTitle;
 		this.optionType = optionType;
 		this.necessary = necessary;
 		this.option = option;
 	}
 
-	public int getQuId() {
-		return quId;
+	public int getId() {
+		return id;
 	}
 
-	public void setQuId(int quId) {
-		this.quId = quId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getQnId() {
@@ -70,12 +57,12 @@ public class Question {
 		this.qnId = qnId;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getqTitle() {
+		return qTitle;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setqTitle(String qTitle) {
+		this.qTitle = qTitle;
 	}
 
 	public String getOptionType() {
@@ -86,11 +73,11 @@ public class Question {
 		this.optionType = optionType;
 	}
 
-	public boolean isNecessary() {
+	public String getNecessary() {
 		return necessary;
 	}
 
-	public void setNecessary(boolean necessary) {
+	public void setNecessary(String necessary) {
 		this.necessary = necessary;
 	}
 
@@ -102,4 +89,9 @@ public class Question {
 		this.option = option;
 	}
 
+<<<<<<< HEAD
+=======
+	
+	
+>>>>>>> 3574534accc9673b71bf9cd8bd9e82d904ab7dc0
 }

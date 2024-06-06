@@ -6,26 +6,39 @@ import java.util.List;
 import com.example.questionnaire.entity.Question;
 import com.example.questionnaire.entity.Questionnaire;
 
-//QuizReq extends(繼承) QuizVo裡面的物件
-public class QuizReq extends QuizVo{ //request請求,Req為縮寫
+public class QuizReq {
 
-	private List<Question> deleteQuestionList = new ArrayList<>();
+	private Questionnaire qusetionnaire ;
 	
+	private List<Question> questionList = new ArrayList<>();
+
 	public QuizReq() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
-	public QuizReq(Questionnaire questionnaire, List<Question> questionList) {
-		super(questionnaire, questionList);
+	public QuizReq(Questionnaire qusetionnaire, List<Question> questionList) {
+		super();
+		this.qusetionnaire = qusetionnaire;
+		this.questionList = questionList;
 	}
 
-	public List<Question> getDeleteQuestionList() {
-		return deleteQuestionList;
+	public Questionnaire getQusetionnaire() {
+		return qusetionnaire;
 	}
 
-	public void setDeleteQuestionList(List<Question> deleteQuestionList) {
-		this.deleteQuestionList = deleteQuestionList;
+	public void setQusetionnaire(Questionnaire qusetionnaire) {
+		this.qusetionnaire = qusetionnaire;
 	}
+
+	public List<Question> getQuestionList() {
+		return questionList;
+	}
+
+	public void setQuestionList(List<Question> questionList) {
+		this.questionList = questionList;
+	}	
 
 	
+
 }
