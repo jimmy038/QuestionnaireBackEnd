@@ -58,12 +58,21 @@ public class UserServiceImpl implements UserService{
 	public UserRes getAnsId(int ansId) {
 		Optional<User> op = userDao.findById(ansId);
 		if(op.isEmpty()) {
-			User user = new User();
-			return new UserRes(user,RtnCode.ID_NOT_FOUND);
+			return new UserRes(RtnCode.ID_NOT_FOUND);
 		}
 		return new UserRes(op.get(),RtnCode.SUCCESSFUL);	
 	}
 
+	
+	@Override //尋找所有user對應qnId的資料 已接到統計
+	public UserRes getAllQnid(int qnId) {
+		List<User> opList = userDao.findAllByqnId(qnId);
+		if(opList.isEmpty()) {
+			return new UserRes(RtnCode.ID_NOT_FOUND);
+		}
+		return new UserRes(RtnCode.SUCCESSFUL,opList);	
+	}
+	
 
 	@Override //存使用者資料 保留 測試用
 	public UserRes saveUserData(UserReq userReq) {
@@ -84,7 +93,7 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	
-	@Override //統計資料api   getCombinedData為 取得組合數據 的意思
+	@Override //測試  沒使用到 統計資料api   getCombinedData為 取得組合數據 的意思
 	public QuizRes getCombinedData(int id,int ansId) {
 		if(!qnDao.existsById(id)) {
 			return new QuizRes(RtnCode.QUESTIONNAIRE_ID_NOT_FOUND);

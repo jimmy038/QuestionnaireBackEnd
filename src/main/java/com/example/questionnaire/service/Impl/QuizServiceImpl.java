@@ -17,6 +17,7 @@ import com.example.questionnaire.entity.Question;
 import com.example.questionnaire.entity.Questionnaire;
 import com.example.questionnaire.repository.QuestionDao;
 import com.example.questionnaire.repository.QuestionnaireDao;
+import com.example.questionnaire.repository.UserDao;
 import com.example.questionnaire.service.ifs.QuizService;
 import com.example.questionnaire.vo.QnQuVo;
 import com.example.questionnaire.vo.QuestionRes;
@@ -35,6 +36,10 @@ public class QuizServiceImpl implements QuizService {
 
 	@Autowired
 	private QuestionDao quDao; // 主要要呼叫Dao,操作與資料庫的連結,縮寫quDao
+	
+
+	@Autowired
+	private UserDao userDao; 
 
 	// 用在要將兩張表同時存進資料庫時
 	@Transactional // @Transactional(交易),當2個save都能成功save的時候才會save，只能加在public 上面
@@ -49,11 +54,7 @@ public class QuizServiceImpl implements QuizService {
 		int qnId = qnDao.save(req.getQuestionnaire()).getId();// 要接回來因為Questionnaire裡面的qid才會出來
 		List<Question> quList = req.getQuestionList();
 
-		// 可以只新增問卷，問卷內沒有題目
-//		if(quList.isEmpty()) { //如果quList不為空時回傳SUCCESSFUL成功的訊息
-//			System.out.println("fail: "+quList);
-//			return new QuizRes(RtnCode.SUCCESSFUL);
-//		}
+		
 		for (Question qu : quList) {
 			qu.setQnId(qnId); // 設定問卷的ID對應到問卷問題的ID使其對應到該題目
 		}
@@ -83,9 +84,8 @@ public class QuizServiceImpl implements QuizService {
 		return null;
 	}
 
-	@Transactional // 如果方法中的任何一部分操作失敗，所有操作將會回滾，確保資料庫的一致性。
-	@Override // 更新(修改已存在的資料),第1步:檢查參數 第2步:更新既有的資料。這是一個 QuizService 類別中的 update
-				// 方法，用於更新現有的問卷資料。
+	@Transactional  		// 如果方法中的任何一部分操作失敗，所有操作將會回滾，確保資料庫的一致性。						
+	@Override 			    // 更新(修改已存在的資料),第1步:檢查參數 第2步:更新既有的資料。
 	public QuizRes update(QuizReq req) {
 //	參數檢查,checkParam(req): 呼叫一個方法，檢查傳入的 QuizReq 對象是否符合某些參數的要求。checkQuestionnaireId(req): 另一個方法，用於確認傳入的問卷 ID 是否有效。		
 		QuizRes checkResult = checkParam(req);
@@ -97,9 +97,9 @@ public class QuizServiceImpl implements QuizService {
 		if (checkResult != null) {
 			return checkResult;
 		}
-//		檢查問卷是否存在,用qnDao.findById(req.getQuestionnaire().getId())查找要更新的問卷。如果該問卷ID不存在，將返回QUESTIONNAIRE_ID_NOT_FOUND的QuizRes物件。
 		Optional<Questionnaire> qnOp = qnDao.findById(req.getQuestionnaire().getId());
-		if (qnOp.isEmpty()) { // 檢查ID存不存在,如果不存在拋錯誤訊息出去
+		// 檢查ID存不存在,如果不存在拋錯誤訊息出去
+		if (qnOp.isEmpty()) { 
 			return new QuizRes(RtnCode.QUESTIONNAIRE_ID_NOT_FOUND);
 		}
 //		collect deleted_question_id
@@ -118,11 +118,10 @@ public class QuizServiceImpl implements QuizService {
 			quDao.saveAll(req.getQuestionList()); // 存儲所有新添加的問題。
 //			↓多做一個判斷式主要為不想讓他進到DB裡面
 //			更新操作:如果問卷符合修改條件，將更新問卷資訊到資料庫中，包括問卷本身資料及相關的問題列表。	
-			if (!deletedQuIdList.isEmpty()) {
+			if (!deletedQuIdList.isEmpty()) { //isEmpty() 如果為空
 //				↓如果deletedQuIdList不為空的話就去刪除他,刪除所選的問題。
 				quDao.deleteAllByQnIdAndQuIdIn(qn.getId(), deletedQuIdList);
 			}
-//			返回結果:根據執行結果返回不同的QuizRes物件，如果更新成功，返回SUCCESSFUL，否則返回UPDATE_ERROR。			
 			return new QuizRes(RtnCode.SUCCESSFUL);
 		}
 		return new QuizRes(RtnCode.UPDATE_ERROR);
@@ -175,8 +174,8 @@ public class QuizServiceImpl implements QuizService {
 		if (idList.isEmpty()) { // 假設idList不是空的才去做刪除多筆資料
 			qnDao.deleteAllById(idList); // 刪除問卷題目,進到資料庫一次刪多筆
 			quDao.deleteAllByQnIdIn(idList); // 刪除問卷問題,一次刪多筆
+			
 		}
-//		無論是否有問卷被刪除，方法會返回一個 QuizRes 物件，並使用 RtnCode.SUCCESSFUL 作為成功刪除的標識。		
 		return new QuizRes(RtnCode.SUCCESSFUL);
 	}
 
@@ -328,7 +327,7 @@ public class QuizServiceImpl implements QuizService {
 		return new QuestionnaireRes(qnList, RtnCode.SUCCESSFUL);
 	}
 
-	@Override // 找問卷ID及找問卷內底下對應問題
+	@Override // 找問卷ID及找問卷內底下對應問題  接統計資料api 已接到統計
 	public QuizRes getQuizInfo(int id) {
 		//如果id問卷不存在 回傳錯誤
 		if (!qnDao.existsById(id)) {

@@ -31,7 +31,7 @@ public class QuizConetroller {
 
 	@Autowired /* Conetroller跟Service做介接,@Autowired QuizService進來 */
 	private QuizService service;
-	
+
 	@Autowired
 	private UserService userService;
 
@@ -84,10 +84,9 @@ public class QuizConetroller {
 
 	// 搜尋問卷列表模糊搜尋
 	@GetMapping(value = "api/quiz/searchQuiz")
-	public QuestionnaireRes searchQuizs(
-		@RequestParam(value="title",required = false) String title,
-		@RequestParam(value="startDate",required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-		@RequestParam(value="endDate",required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+	public QuestionnaireRes searchQuizs(@RequestParam(value = "title", required = false) String title,
+			@RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+			@RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
 		return service.searchQuizs(title, startDate, endDate);
 	}
 
@@ -96,29 +95,36 @@ public class QuizConetroller {
 	public QuestionRes searchQuestionList(int qnId) {
 		return service.searchQuestionList(qnId);
 	}
-	
-	//存使用者資料
+
+	// 存使用者資料
 	@PostMapping(value = "api/quiz/saveUser") // ←一個api的完整格式為一個url,給外面的使用,post指的是提供HTTP的請求方法
 	public UserRes saveUser(@RequestBody User user) {
 		return userService.saveUser(user);
 	}
-	
-	//找問卷ID及找問卷內底下對應問題
-	@GetMapping(value = "api/quiz/getQuizInfo") 
+
+	// 找問卷ID及找問卷內底下對應問題 ， 接統計資料api 已接到統計圖表
+	@GetMapping(value = "api/quiz/getQuizInfo")
 	public QuizRes getQuizInfo(@RequestParam(value = "id") int id) {
 		return service.getQuizInfo(id);
 	}
-	
-	//找使用者回答所有資訊的ID
-	@GetMapping(value = "api/quiz/getAnsId") 
+
+	// 找使用者回答所有資訊的ID
+	@GetMapping(value = "api/quiz/getAnsId")
 	public UserRes getAnsId(@RequestParam(value = "id") int ansId) {
 		return userService.getAnsId(ansId);
 	}
-	
-	//抓所有資料 問卷 問題 user api
-	@GetMapping(value = "api/quiz/getgetCombinedData") 
-	public QuizRes getCombinedData(@RequestParam(value = "id")int id,
-			@RequestParam(value = "ansId")int ansId) {
-		return userService.getCombinedData(id,ansId);
+
+	// 抓所有資料 問卷 問題 user api
+	@GetMapping(value = "api/quiz/getgetCombinedData")
+	public QuizRes getCombinedData(@RequestParam(value = "id") int id, @RequestParam(value = "ansId") int ansId) {
+		return userService.getCombinedData(id, ansId);
 	}
+	
+	 
+	// 取得 user 表格內對應的 問卷id(qnId)  接統計資料api 已接到統計圖表
+	@GetMapping(value = "api/quiz/getAllQnid")
+	public UserRes getAllQnid(@RequestParam(value = "qnId") int qnId) {
+		return userService.getAllQnid(qnId);
+	}
+
 }
