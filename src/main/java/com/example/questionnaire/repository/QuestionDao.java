@@ -15,12 +15,18 @@ public interface QuestionDao extends JpaRepository<Question, Integer>{
 	public void deleteAllByQnIdIn(List<Integer> qnIdList); //刪除問卷問題,刪除多筆
 	
 	public void deleteAllByQnIdAndQuIdIn(int qnId,List<Integer> quIdList);
-	
+		
 	public List<Question> findByQuIdInAndQnId(List<Integer> idList,int qnId);
 
 	public List<Question> findAllByQnIdIn(List<Integer> qnIdList);
 	
 	public List<Question> findAllByQnId(int qnid);
+	
+	//
+	public void deleteAllByQnId(int qnid);
+	
+	//尋找對應qnid
+	public boolean existsByqnId(int qnId) ;
 	
 //	SQL語法練習	
 	@Query(value = "insert into question(id, qn_id, q_title, option_type, is_necessary, q_option)"

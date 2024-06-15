@@ -22,6 +22,7 @@ public interface QuizService {
 	//刪除同張問卷的題目
 	public QuizRes deleteQuestion(int qnId,List<Integer> quIdList); //刪除問題
 
+	
 	//搜尋裡面帶三個參數
 	public QuizRes search(String title, LocalDate startDate, LocalDate endDate);
 

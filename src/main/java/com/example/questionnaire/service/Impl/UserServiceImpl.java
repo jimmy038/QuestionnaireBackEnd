@@ -40,16 +40,16 @@ public class UserServiceImpl implements UserService{
 				!StringUtils.hasText(user.getPhoneNumber()) || user.getAge() <= 0 ) {
 			return new UserRes(RtnCode.PARAM_ERROR);
 		}
-	    // 檢查問卷ID是否存在
-		Optional<Questionnaire> qnop = qnDao.findById(user.getQnId());
-		if(qnop.isEmpty()) {
+	    // 撈問卷id判斷是否為空
+		Optional<Questionnaire> qnId = qnDao.findById(user.getQnId());
+		if(qnId.isEmpty()) {
 			return new UserRes(RtnCode.QUESTIONNAIRE_ID_NOT_FOUND);	
 		}
 		try {	
 			userDao.save(user);
 			 return new UserRes(RtnCode.SUCCESSFUL);    
 		} catch (Exception e) {
-			 return new UserRes(RtnCode.DATABASE_ERROR);
+			 return new UserRes(RtnCode.SAVE_ERROR);
 		}
 	}
 
@@ -67,8 +67,9 @@ public class UserServiceImpl implements UserService{
 	@Override //尋找所有user對應qnId的資料 已接到統計
 	public UserRes getAllQnid(int qnId) {
 		List<User> opList = userDao.findAllByqnId(qnId);
+		//判斷陣列list是否為空
 		if(opList.isEmpty()) {
-			return new UserRes(RtnCode.ID_NOT_FOUND);
+			return new UserRes(RtnCode.PARAM_ERROR);
 		}
 		return new UserRes(RtnCode.SUCCESSFUL,opList);	
 	}
@@ -95,15 +96,17 @@ public class UserServiceImpl implements UserService{
 	
 	@Override //測試  沒使用到 統計資料api   getCombinedData為 取得組合數據 的意思
 	public QuizRes getCombinedData(int id,int ansId) {
+		//查問卷id是否存在
 		if(!qnDao.existsById(id)) {
 			return new QuizRes(RtnCode.QUESTIONNAIRE_ID_NOT_FOUND);
 		}
 		//撈出問卷id接回來
-		Optional<Questionnaire> quiz = qnDao.findById(id);
-		//撈出問題id接回來 問題多筆用List
+		Optional<Questionnaire> quizId = qnDao.findById(id);
+		//撈出問題對應的qnId接回來 問題多筆用List
 		List<Question> questions = questionDao.findAllByQnId(id);
+		//接多筆問卷
 		List<QuizVo> quizVo = new ArrayList<>();
-		quizVo.add(new QuizVo(quiz.get(),questions));
+		quizVo.add(new QuizVo(quizId.get(),questions));
 		//撈使用者
 		Optional<User> userOp = userDao.findById(ansId);
 		//使用者id若不存在

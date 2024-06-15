@@ -72,7 +72,7 @@ public class QuizConetroller {
 	// deleteQuestion刪除問卷問題
 	@PostMapping(value = "api/quiz/deleteQuestion")
 	public QuizRes deleteQuestion(@RequestBody int qnId, List<Integer> quIdList) {
-		return service.deleteQuestionnaire(quIdList);
+		return service.deleteQuestion(qnId, quIdList);
 	}
 
 	// 搜尋問卷列表
@@ -115,16 +115,16 @@ public class QuizConetroller {
 	}
 
 	// 抓所有資料 問卷 問題 user api
-	@GetMapping(value = "api/quiz/getgetCombinedData")
+	@GetMapping(value = "api/quiz/getCombinedData")
 	public QuizRes getCombinedData(@RequestParam(value = "id") int id, @RequestParam(value = "ansId") int ansId) {
 		return userService.getCombinedData(id, ansId);
 	}
-	
-	 
-	// 取得 user 表格內對應的 問卷id(qnId)  接統計資料api 已接到統計圖表
+
+	// 取得 user 表格內對應的 問卷id(qnId) 接統計資料api 已接到統計圖表
 	@GetMapping(value = "api/quiz/getAllQnid")
 	public UserRes getAllQnid(@RequestParam(value = "qnId") int qnId) {
 		return userService.getAllQnid(qnId);
 	}
+
 
 }

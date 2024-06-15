@@ -10,11 +10,6 @@ import com.example.questionnaire.service.ifs.QuestionService;
 @Service
 public class QuestionServiceImpl implements QuestionService{
 	
-	@Autowired
-	private UserDao userDao;
-	
-	public void saveUser(User user) {
-        userDao.save(user);
-    }
+
 
 }

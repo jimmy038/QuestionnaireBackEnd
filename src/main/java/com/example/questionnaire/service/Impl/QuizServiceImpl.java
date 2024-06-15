@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 import com.example.questionnaire.constants.RtnCode;
 import com.example.questionnaire.entity.Question;
 import com.example.questionnaire.entity.Questionnaire;
+import com.example.questionnaire.entity.User;
 import com.example.questionnaire.repository.QuestionDao;
 import com.example.questionnaire.repository.QuestionnaireDao;
 import com.example.questionnaire.repository.UserDao;
@@ -37,7 +38,6 @@ public class QuizServiceImpl implements QuizService {
 	@Autowired
 	private QuestionDao quDao; // 主要要呼叫Dao,操作與資料庫的連結,縮寫quDao
 	
-
 	@Autowired
 	private UserDao userDao; 
 
@@ -52,11 +52,12 @@ public class QuizServiceImpl implements QuizService {
 		}
 		// 儲存後，把 QN 中最新一筆的ID拉出來，存到QU的qn_id中，
 		int qnId = qnDao.save(req.getQuestionnaire()).getId();// 要接回來因為Questionnaire裡面的qid才會出來
+		//接問卷問題
 		List<Question> quList = req.getQuestionList();
-
-		
+		//遍歷問題
 		for (Question qu : quList) {
-			qu.setQnId(qnId); // 設定問卷的ID對應到問卷問題的ID使其對應到該題目
+		// 設定問卷的ID對應到問卷問題的ID使其對應到該題目
+			qu.setQnId(qnId);
 		}
 		quDao.saveAll(quList);
 		System.out.println("SUCCESSFUL: " + quList);
@@ -74,12 +75,12 @@ public class QuizServiceImpl implements QuizService {
 			return new QuizRes(RtnCode.QUESTIONNAIRE_PARAM_ERROR);// 如果QUESTIONNAIRE這張表錯就不會檢查到第二張
 		}
 //		對於每個問題，確保問題的ID(QuId)大於0。確保問題的標題(Title)、選項內容(Option)非空。		
-//		List<Question> quList = req.getQuestionList();
-//		for (Question qu : quList) {
-//			if (qu.getQuId() <= 0 || !StringUtils.hasText(qu.getTitle()) || !StringUtils.hasText(qu.getOption())) { // 這邊防問題的
-//				return new QuizRes(RtnCode.QUESTION_PARAM_ERROR);
-//			}
-//		}
+		List<Question> quList = req.getQuestionList();
+		for (Question qu : quList) {
+			if (!StringUtils.hasText(qu.getTitle()) || !StringUtils.hasText(qu.getOption())) { // 這邊防問題的
+				return new QuizRes(RtnCode.QUESTION_PARAM_ERROR);
+			}
+		}
 		// 通過以上兩個的檢查若回傳null代表成功，沒有錯
 		return null;
 	}
@@ -157,24 +158,27 @@ public class QuizServiceImpl implements QuizService {
 	}
 
 //	@CacheEvict(value = "search")
+	@Transactional //對兩張表or以上作操作記得下這個註釋
 	@Override // 刪除問卷題目及問題的方法
 	public QuizRes deleteQuestionnaire(List<Integer> qnIdList) {
 		List<Questionnaire> qnList = qnDao.findByIdIn(qnIdList);
+		//把id的list  new出來
 		List<Integer> idList = new ArrayList<>();
 //	會遍歷qnList中的每個問卷，檢查是否滿足以下條件：問卷尚未發布或者已經發布但是當前日期小於開始日期。如果滿足條件，該問卷的ID會被加入到idList 中。				
 		for (Questionnaire qn : qnList) { // 當前時間小於開始日期
 			if (!qn.isPublished() || qn.isPublished() && LocalDate.now().isBefore(qn.getStartDate())) {
-				qnDao.deleteById(qn.getId());
+				//把符合刪除條件的問卷id加入idList內一次刪多筆問卷的id
 				idList.add(qn.getId());
 			}
 		}
 //		在檢查完所有問卷後會檢查idList是否為空。如果idList是空的，則表示沒有符合條件的問卷需要被刪除。否則，會執行下面的刪除操作：
 //		qnDao.deleteAllById(idList)：這個語句會刪除問卷題目，對應著idList中的問卷ID。
 //		quDao.deleteAllByQnIdIn(idList)：這個語句會刪除問卷問題，對應著idList中的問卷ID。		
-		if (idList.isEmpty()) { // 假設idList不是空的才去做刪除多筆資料
-			qnDao.deleteAllById(idList); // 刪除問卷題目,進到資料庫一次刪多筆
+		if (!idList.isEmpty()) { // 假設idList不是空的才去做刪除多筆資料
+			//刪除順序有差別在有外鍵約束下必須先刪除問卷對應的qnId資料最後刪問卷
+			userDao.deleteAllByqnIdIn(idList);//刪使用者
 			quDao.deleteAllByQnIdIn(idList); // 刪除問卷問題,一次刪多筆
-			
+			qnDao.deleteAllById(idList); // 刪除問卷題目,進到資料庫一次刪多筆
 		}
 		return new QuizRes(RtnCode.SUCCESSFUL);
 	}
